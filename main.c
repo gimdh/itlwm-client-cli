@@ -12,7 +12,7 @@ int main(void)
     int code;
     char is_encrypted;
 
-    printf("1: Connect, 2: Disconnect: ");
+    printf("1-Connect, 2-Disconnect, 3-AP List: ");
     scanf("%d", &code);
 
     switch (code)
@@ -52,7 +52,24 @@ int main(void)
             printf("%s", strerror(a));  
 
             break;
-       }
+        }
+        case COM_GETLIST: {
+            struct node_data_ary ary;
+            
+            int a = get_nodes(&ary);
+
+            if (a)
+                printf("%s", strerror(a));
+
+            else
+            {
+                for (int i=0; i<ary.len; i++)
+                {
+                    struct node_data *node = ary.node + i;
+                    printf("SSID: %-30s\tBSSID: %s\tRSSI: %d\n", node->essid, node->bssid, node->rssi);
+                }
+            }
+        }
     }
     return 0;
 }

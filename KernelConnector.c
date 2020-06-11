@@ -86,12 +86,33 @@ int send_command(int id, const void *data, int data_len) {
     int result = setsockopt(fd, SYSPROTO_CONTROL, id, data, data_len);
     int a = errno;
 
-        
-    if (result){
+    if (result) {
         fprintf(stderr, "setsockopt failed on call id %d - result was %d\n", id, result);
         return a;
     }
     
+    return 0;
+}
+
+int get_nodes(struct node_data_ary *ary) {
+    int len = sizeof(struct node_data_ary);
+    return get_command(COM_GETLIST, ary, &len);
+}
+
+int get_command(int id, void *data, int *data_len) {
+    if (fd == -1)
+    {
+        open_socket();
+    }
+
+    int result = getsockopt(fd, SYSPROTO_CONTROL, id, data, data_len);
+    int a = errno;
+
+    if (result) {
+        fprintf(stderr, "getsockopt failed on call id %d - result was %d\n", id, result);
+        return a;
+    }
+
     return 0;
 }
 

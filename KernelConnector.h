@@ -15,9 +15,14 @@
 
 
 int open_socket(void);
+
 int send_join_ssid(const char *ssid, const char *passwd);
 int send_disconnect(void);
 int send_command(int id, const void *data, int data_len);
+
+int get_nodes(struct node_data_ary *ary);
+int get_command(int id, void *data, int *data_len);
+
 int close_socket(void);
 
 #endif /* KernelConnector_h */
